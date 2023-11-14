@@ -107,34 +107,25 @@ function renderButtons() {
 
 function renderPrice() {
   // Iteration 4: change the HTML of `<aside class="panel price">`
-  const ingredientList = document.querySelectorAll('.panel.price li');
-  ingredientList.forEach((ingredient) => {
-    let text = ingredient.innerHTML.split(' ')[1];
-    if (text === 'green') {
-      text = 'greenPeppers';
-    }
-    if (text === 'white') {
-      text = 'whiteSauce';
-    }
-    if (text === 'gluten-free') {
-      text = 'glutenFreeCrust';
-    }
-    if (state[text]) {
-      ingredient.style.display = 'block';
-    } else {
-      ingredient.style.display = 'none';
-    }
-  });
 
-  const priceElement = document.querySelector('.panel.price strong');
-  let finalPrice = 10;
-  for (let ingredient in state) {
+  let panel = document.querySelector('.panel.price');
+  let ul = panel.querySelector('ul');
+  let strongElement = panel.querySelector('strong');
+
+  ul.innerHTML = '';
+  let totalPrice = basePrice;
+
+  for (const ingredient in ingredients) {
     if (state[ingredient]) {
-      const price = ingredients[ingredient].price;
-      finalPrice += price;
+      let liElements = document.createElement('li');
+      liElements.textContent = `$${ingredients[ingredient].price} ${ingredients[ingredient].name}`;
+
+      ul.appendChild(liElements);
+
+      totalPrice += ingredients[ingredient].price;
     }
   }
-  priceElement.innerHTML = '$' + finalPrice;
+  strongElement.innerHTML = `$${totalPrice}`;
 }
 
 renderEverything();
